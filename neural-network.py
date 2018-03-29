@@ -218,10 +218,69 @@ class Neuron:
 
 # Blog post example:
 
-nn = NeuralNetwork(2, 2, 2, hidden_layer_weights=[0.15, 0.2, 0.25, 0.3], hidden_layer_bias=0.35, output_layer_weights=[0.4, 0.45, 0.5, 0.55], output_layer_bias=0.6)
-for i in range(10000):
-    nn.train([0.05, 0.1], [0.01, 0.99])
-    print(i, round(nn.calculate_total_error([[[0.05, 0.1], [0.01, 0.99]]]), 9))
+def number2_first(input):
+    return input * math.sin(6 * math.pi * input) * math.exp(math.pow(input,2) * -1.0)
+
+def number2_second(input):
+    return math.exp(math.pow(input,2) * -1.0) * math.atan(input) * math.sin(4 * math.pi * input)
+
+def number3(input1, input2):
+    return math.sin(2 * math.pi * input1) * math.cos(0.5 * math.pi * input2) * math.exp(math.pow(input1,2) * -1.0)
+
+# Number 2
+
+neurons = [2, 3, 4, 10, 100]
+# neurons = [3, 3, 3, 3, 3]
+# samples = [50, 500, 5000]
+samples = [500, 500, 500, 500, 500]
+
+for neuron in neurons:
+    for sampleCount in samples:
+        print("number of neurons: ", neuron, "number of samples: ", sampleCount)
+        nn = NeuralNetwork(1, neuron, 1, None, -1, None, -1)
+        for i in range(sampleCount):
+            trainingInput = random.uniform(-1,1)
+            trainingOutput = number2_first(trainingInput)
+            nn.train([trainingInput], [trainingOutput])
+
+        sampleRunCount = 5000
+        inoutSets = list()
+
+        for i in range(sampleRunCount):
+            randomInput = random.uniform(-1,1)
+            inoutSet = [[randomInput]]
+            inoutSet.append([number2_first(randomInput)])
+            inoutSets.append(inoutSet)
+            
+        print(round(nn.calculate_total_error(inoutSets)/sampleRunCount * 100, 2))
+
+# Number 3
+
+# neurons = [2, 4, 6, 8, 12, 20]
+# # neurons = [4]
+# samples = [350]
+
+# for neuron in neurons:
+#     for sampleCount in samples:
+#         print("number of neurons: ", neuron, "number of samples: ", sampleCount)
+#         nn = NeuralNetwork(2, neuron, 1, None, -1, None, -1)
+#         for i in range(sampleCount):
+#             trainingInput1 = random.uniform(-1,1)
+#             trainingInput2 = random.uniform(-4,4)
+#             trainingOutput = number3(trainingInput1, trainingInput2)
+#             nn.train([trainingInput1, trainingInput2], [trainingOutput])
+
+#         sampleRunCount = 150
+#         inoutSets = list()
+
+#         for i in range(sampleRunCount):
+#             randomInput1 = random.uniform(-1,1)
+#             randomInput2 = random.uniform(-4,4)
+#             inoutSet = [[randomInput1, randomInput2]]
+#             inoutSet.append([number3(randomInput1, randomInput2)])
+#             inoutSets.append(inoutSet)
+            
+#         print(round(nn.calculate_total_error(inoutSets)/sampleRunCount, 9))
 
 # XOR example:
 
